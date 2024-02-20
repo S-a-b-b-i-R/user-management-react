@@ -1,6 +1,20 @@
+import PropTypes from "prop-types";
+import { Link, NavLink } from "react-router-dom";
+
 const Navbar = () => {
+    const navLinks = (
+        <>
+            <li>
+                <NavLink to="/json">JSON</NavLink>
+            </li>
+            <li>
+                <NavLink to="/mongodb">MongoDB</NavLink>
+            </li>
+        </>
+    );
+
     return (
-        <div className="navbar bg-base-100">
+        <div className="navbar bg-base-100 mb-28">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div
@@ -29,35 +43,21 @@ const Navbar = () => {
                     >
                         <li>
                             <a>Data Source</a>
-                            <ul className="p-2">
-                                <li>
-                                    <a>Submenu 1</a>
-                                </li>
-                                <li>
-                                    <a>Submenu 2</a>
-                                </li>
-                            </ul>
+                            <ul className="p-2">{navLinks}</ul>
                         </li>
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-base text-left">
+                <Link to="/" className="btn btn-ghost text-base text-left">
                     USER <br />
                     MANAGEMENT
-                </a>
+                </Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
                     <li>
                         <details>
                             <summary>Data Source</summary>
-                            <ul className="p-2 w-40">
-                                <li>
-                                    <a>Submenu 1</a>
-                                </li>
-                                <li>
-                                    <a>Submenu 2</a>
-                                </li>
-                            </ul>
+                            <ul className="p-2 w-40">{navLinks}</ul>
                         </details>
                     </li>
                 </ul>
@@ -67,6 +67,10 @@ const Navbar = () => {
             </div>
         </div>
     );
+};
+
+Navbar.propTypes = {
+    setSource: PropTypes.func,
 };
 
 export default Navbar;
