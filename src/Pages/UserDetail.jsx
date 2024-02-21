@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import Loading from "../Components/Loading/Loading";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -33,6 +33,10 @@ const UserDetail = () => {
     return (
         <div>
             <form onSubmit={handleUpdateProfile} className="card-body">
+                {/* go back button */}
+                <Link className="flex justify-center" to="/json">
+                    <Button text="Go Back" />
+                </Link>
                 <div className="flex gap-2 items-start">
                     <div className="form-control w-1/2">
                         <label className="label">

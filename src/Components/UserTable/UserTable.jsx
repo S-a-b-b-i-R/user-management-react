@@ -47,6 +47,19 @@ const UserTable = () => {
     const handleNextpage = () => {
         setCurrentPage(currentPage + 1);
     };
+
+    const handleDelete = (id) => {
+        //delete the user from json file found in the public folder
+        const newUsers = users.filter((user) => user.id !== id);
+        axios
+            .put("../../../public/generated_data.json", newUsers)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
     return (
         <>
             <>
@@ -73,10 +86,18 @@ const UserTable = () => {
                                         <td>{user.lastName}</td>
                                         <td>{user.company}</td>
                                         <td>{user.sex}</td>
-                                        <td>
+                                        <td className="flex flex-col md:flex-row gap-2">
                                             <Link to={`/userdetail/${user.id}`}>
                                                 <Button text="Edit" />
                                             </Link>
+                                            <button
+                                                className="btn bg-mainCol hover:bg-mainCol font-bold text-textCol"
+                                                onClick={() =>
+                                                    handleDelete(user.id)
+                                                }
+                                            >
+                                                Delete
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
