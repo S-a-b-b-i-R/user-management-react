@@ -112,17 +112,25 @@ const UserTable = () => {
                                     <td>{user.company}</td>
                                     <td>{user.sex}</td>
                                     <td className="flex flex-col md:flex-row gap-2">
-                                        <Link to={`/userdetail/${user.id}`}>
-                                            <Button text="Edit" />
-                                        </Link>
-                                        <button
-                                            className="btn bg-mainCol hover:bg-mainCol font-bold text-textCol"
-                                            onClick={() =>
-                                                handleDelete(user.id)
-                                            }
-                                        >
-                                            Delete
-                                        </button>
+                                        {source === "json" ? (
+                                            <>
+                                                <Link
+                                                    to={`/userdetail/${user.id}`}
+                                                >
+                                                    <Button text="Edit" />
+                                                </Link>
+                                                <button
+                                                    className="btn bg-mainCol hover:bg-mainCol font-bold text-textCol"
+                                                    onClick={() =>
+                                                        handleDelete(user.id)
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <p>Cannot Update</p>
+                                        )}
                                     </td>
                                 </tr>
                             ))}
