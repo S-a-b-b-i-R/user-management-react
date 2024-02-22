@@ -5,6 +5,7 @@ import UserTable from "../Components/UserTable/UserTable";
 import MongoTable from "../Components/UserTable/MongoTable";
 import UserDetail from "../Pages/UserDetail";
 import Header from "../Components/Header/Header";
+import CreateUser from "../Pages/CreateUser";
 
 const Routes = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const Routes = createBrowserRouter([
             {
                 path: "/userdetail/:id",
                 element: <UserDetail />,
+            },
+            {
+                path: "/createuser",
+                element: <CreateUser />,
             },
         ],
     },
