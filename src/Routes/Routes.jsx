@@ -23,7 +23,7 @@ const Routes = createBrowserRouter([
             },
             {
                 path: "/mongodb",
-                element: <MongoTable />,
+                element: <UserTable />,
             },
             {
                 path: "/userdetail/:id",

@@ -1,14 +1,65 @@
+import { useState } from "react";
 import Button from "../Components/Button/Button";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { createUser } from "../API/api";
+import Swal from "sweetalert2";
 
 const CreateUser = () => {
-    const setSex = (e) => {
-        console.log(e);
+    const [sex, setSex] = useState("");
+    const [active, setActive] = useState("");
+
+    const { mutateAsync } = useMutation({
+        mutationFn: createUser,
+    });
+
+    const handelAddUser = async (e) => {
+        e.preventDefault();
+        const firstName = e.target.fname.value;
+        const lastName = e.target.lname.value;
+        const phone = e.target.phone.value;
+        const address = e.target.address.value;
+        const city = e.target.city.value;
+        const country = e.target.country.value;
+        const role = e.target.role.value;
+        const company = e.target.company.value;
+        const user = {
+            id: 0,
+            firstName,
+            lastName,
+            active: active === "Active" ? true : false,
+            company,
+            sex,
+            contact: {
+                id: 0,
+                phone,
+                address,
+                city,
+                country,
+            },
+            role: {
+                id: 0,
+                role,
+            },
+        };
+        console.log(user);
+        try {
+            await mutateAsync(user);
+            Swal.fire({
+                title: "User Created",
+                text: "Thank you for creating a new user",
+                icon: "success",
+            });
+            e.target.reset();
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
         <div className="px-40">
             <div className=" mx-auto">
-                <form className="card-body">
+                <form onSubmit={handelAddUser} className="card-body">
                     <div className="flex gap-2">
                         <div className="form-control w-1/2">
                             <label className="label">
@@ -90,6 +141,18 @@ const CreateUser = () => {
                     <div className="flex gap-2">
                         <div className="form-control w-1/2">
                             <label className="label">
+                                <span className="label-text">Company</span>
+                            </label>
+                            <input
+                                type="company"
+                                placeholder="company"
+                                name="company"
+                                className="input input-bordered"
+                                required
+                            />
+                        </div>
+                        <div className="form-control w-1/2">
+                            <label className="label">
                                 <span className="label-text">Role</span>
                             </label>
                             <input
@@ -99,6 +162,24 @@ const CreateUser = () => {
                                 className="input input-bordered"
                                 required
                             />
+                        </div>
+                    </div>
+                    <div className="flex gap-2">
+                        <div className="form-control w-1/2">
+                            <label className="label">
+                                <span className="label-text">Active</span>
+                            </label>
+                            <select
+                                className="border border-slate-300 p-3 rounded-lg"
+                                defaultValue="Select Status"
+                                onChange={(e) => {
+                                    setActive(e.target.value);
+                                }}
+                            >
+                                <option disabled>Select Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
                         </div>
                         <div className="form-control w-1/2">
                             <label className="label">

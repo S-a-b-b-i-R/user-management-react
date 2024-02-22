@@ -6,7 +6,9 @@ import { useEffect, useState } from "react";
 import "./table.css";
 import Button from "../Button/Button";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 const UserTable = () => {
+    const source = location.pathname === "/json" ? "json" : "mongodb";
     const [itemsPerPage, setItemsPerPage] = useState(2);
     const [currentPage, setCurrentPage] = useState(1);
     const [pages, setPages] = useState([]);
@@ -21,9 +23,8 @@ const UserTable = () => {
         queryKey: ["users"],
         queryFn: async () => {
             const response = await axios.get(
-                `http://10.10.83.41:50/api/users/getAll?dataSource=json&pageNumber=${currentPage}&pageSize=${itemsPerPage}`
+                `http://10.10.83.41:50/api/users/getAll?dataSource=${source}&pageNumber=${currentPage}&pageSize=${itemsPerPage}`
             );
-            // console.log(response.data);
             return response.data;
         },
     });
@@ -43,7 +44,7 @@ const UserTable = () => {
         setPages([...Array(numberofPages).keys()]);
         console.log(pages);
         refetch();
-    }, [itemsPerPage, currentPage, refetch, totalUsers]);
+    }, [itemsPerPage, currentPage, refetch, totalUsers, location.pathname]);
 
     if (isLoading || totalUsersLoading) return <Loading />;
     if (isError) return <Error error={error} />;
@@ -63,15 +64,25 @@ const UserTable = () => {
     };
 
     const handleDelete = (id) => {
-        //delete the user from json file found in the public folder
-        const newUsers = users.filter((user) => user.id !== id);
         axios
-            .put("../../../public/generated_data.json", newUsers)
+            .delete(`https://10.10.83.41:50/api/users/delete?id=${id}`)
             .then((response) => {
-                // console.log(response);
+                if (response.status === 200) {
+                    refetch();
+                    Swal.fire({
+                        title: "User Deleted",
+                        text: "User has been deleted",
+                        icon: "success",
+                    });
+                }
             })
             .catch((error) => {
-                // console.log(error);
+                Swal.fire({
+                    title: "Error",
+                    text: { error },
+                    icon: "error",
+                });
+                console.log(error);
             });
     };
     return (
